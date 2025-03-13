@@ -53,7 +53,7 @@ select * from goldusers_signup;
 select * from users;
 End
 
-1. what is the Total amount each customer spent on Zomato?
+-- 1. what is the Total amount each customer spent on Zomato?
 
 
 select S.userid, Sum(P.price) as Total_spent
@@ -62,11 +62,11 @@ Join product P
 on S.product_id = P.product_id
 Group By S.userid
 
-2. How many days has each customer visited Zomato?
+-- 2. How many days has each customer visited Zomato?
 
 Select userid, count(userid) as total_days from sales group by userid
 
-3. What was the first product purchased by each customer?
+-- 3. What was the first product purchased by each customer?
 
 With CTE
 as(
@@ -79,7 +79,7 @@ select * from CTE where RANK = 1
 
 select * from sales order by created_date
 
-4. what is the most purchased item on the menu and how many times it was purchased by all customers?
+-- 4. what is the most purchased item on the menu and how many times it was purchased by all customers?
 
 Select top 1 product_id, count(product_id) as Count_of_purchase 
 from sales 
@@ -94,7 +94,7 @@ group by product_id
 order by count(product_id) desc)
 group by userid
 
-5. which item was purchased first by the customer after they became a member?
+-- 5. which item was purchased first by the customer after they became a member?
 see
 
 With CTE
@@ -109,7 +109,7 @@ Group by G.userid, product_id, S.created_date
 
 Select userid, product_id, created_date from CTE where [Rank] = 1 
 
-6. which item was purchased just before the customer became a member?
+-- 6. which item was purchased just before the customer became a member?
 
 With CTE
 As(
@@ -123,7 +123,7 @@ select * from CTE where [Rank] = 1
 
 select *, RANK() over (partition by userid order by created_date desc) as [Rank] from sales 
 
-7.  what is the total order and amount spent for each member before they became a member?
+-- 7.  what is the total order and amount spent for each member before they became a member?
 
 select G.userid, count(S.userid) as [Total Orders], sum(price) as Amount_spent
 from sales S
@@ -134,7 +134,7 @@ on G.userid = S.userid
 where S.created_date < G.gold_signup_date
 Group by G.userid
 
-8. if buying each product generates points for EX: 5rs = 2 zomato point and each product has differnt purchasing points 
+-- 8. if buying each product generates points for EX: 5rs = 2 zomato point and each product has differnt purchasing points 
    for Ex: for p1 5rs = 1 zomato point , for p2 10 rs = 5 zomato points and p3 5rs = 1 zomato point. 
    Calculate points collected by each customer and for which product points have been given till now.
 
@@ -165,7 +165,7 @@ GROUP BY A.userid, A.product_id) as B) as C
 Order By Zomato_points Desc
 
 
-10. In the first one year after a customer joins the gold program(including their join date ) irrespective of what the customer has 
+-- 10. In the first one year after a customer joins the gold program(including their join date ) irrespective of what the customer has 
 	purchased they earn 5 Zomato points for every 10rs spent. Who earned more 1 or 3 and what was their points earnings in the first year?
 
 Select *, price*.5 as Zomatopoints 
@@ -180,12 +180,12 @@ Where S.created_date >= G.gold_signup_date and S.created_date <= DATEADD(YEAR, 1
 Group by S.userid, P.price, S.created_date) as A 
 
 
-11. Rank all the transactions of the customer.
+-- 11. Rank all the transactions of the customer.
 
 Select *, rank() over (Partition by userid order by created_date) as [Rank]
 from Sales 
 
-12. Rank all transactions for each member whenever they are a Zomato gold member for any non gold member transaction mark NA.
+-- 12. Rank all transactions for each member whenever they are a Zomato gold member for any non gold member transaction mark NA.
 
 SELECT *,
     CASE 
@@ -198,33 +198,3 @@ FROM (
     LEFT JOIN goldusers_signup G 
     ON S.userid = G.userid AND S.created_date >= G.gold_signup_date
 ) AS A;
-
-
-
-
-
-.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-see
