@@ -58,4 +58,4 @@ By answering key business questions, the project helps understand customer behav
 
 1. **Clone the repository:**  
    ```bash
-   git clone https://github.com/yashvardhan0607/zomato-sql-analysis.git
+   git clone https://github.com/yashvardhan0607/Zomato-Data-Analysis-Project
